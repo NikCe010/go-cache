@@ -36,6 +36,8 @@ func (c Cache) Set(key string, value interface{}) error {
 	return nil
 }
 
+//Replace value by key.
+//Return error, if value doesn't exist.
 func (c Cache) Replace(key string, value interface{}) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()

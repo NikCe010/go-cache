@@ -151,6 +151,19 @@ func TestCacheReplace_WithValidData_ShouldSucceed(t *testing.T) {
 	assert.Equal(t, "Hello world!", res)
 }
 
+func TestCacheReplace_WithoutInitialValue_ShouldReturnError(t *testing.T) {
+	dur, err := time.ParseDuration("5m")
+	if err != nil {
+		return
+	}
+	c := New(dur)
+
+	err1 := c.Replace("test", "Hello world!")
+
+	assert.NoError(t, err)
+	assert.Error(t, err1)
+}
+
 func TestCacheGet_WithConcurrent_ShouldSucceed(t *testing.T) {
 	dur, err := time.ParseDuration("5m")
 	if err != nil {
