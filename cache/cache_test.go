@@ -128,6 +128,29 @@ func TestCacheGet_WhenValueExpired_ShouldReturnNil(t *testing.T) {
 	assert.Equal(t, 0, res)
 }
 
+func TestCacheReplace_WithValidData_ShouldSucceed(t *testing.T) {
+	dur, err := time.ParseDuration("5m")
+	if err != nil {
+		return
+	}
+	c := New(dur)
+	err1 := c.Set("test", 42)
+
+	err2 := c.Replace("test", "Hello world!")
+
+	var res string
+	v, ok := c.Get("test")
+	if ok {
+		res = v.(string)
+	}
+
+	assert.NoError(t, err)
+	assert.NoError(t, err1)
+	assert.NoError(t, err2)
+	assert.Equal(t, true, ok)
+	assert.Equal(t, "Hello world!", res)
+}
+
 func TestCacheGet_WithConcurrent_ShouldSucceed(t *testing.T) {
 	dur, err := time.ParseDuration("5m")
 	if err != nil {
